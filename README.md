@@ -32,6 +32,7 @@ A gihub repo containing my work
 A .py file for aquiring and preparing the data.
 A .env file
 A README.md file
+Project PlanningDoc: https://docs.google.com/document/d/1hjgosd8O4rzJlSBqq0HhEKQgg98yRmq0P9Cne1cWMc4/edit?usp=sharing
 
 ____________________________________________________________________________________
 **Project Context**
@@ -75,16 +76,16 @@ between baths and tax_value.
 ____________________________________________________________________________________
 **Executive Summary - Conclusions & Next Steps**
 
-I found that of the regression models I created, Logistic Regression and Lasso Lars, the Logistic Regression models both outperformed the baseline model at predicting housing price. 
+I found that of the regression models I created Logistic Regression and Lasso Lars, both models outperformed the baseline model at predicting housing price. 
 
-I chose the Logistic Regression model because it reduced the MSE or error in prediction by 9 cents more than the Lasso Lars model on train and $5.02 on validate predicting housing price, my target value.   
+I chose the Logistic Regression model because it reduced the MSE or error in prediction by 9 cents more than the Lasso Lars model did on train and and reduced the error by $5.02 on validate when predicting housing price, my target value.   
 
 With more time I would like to investigate how homes with pools drive the tax_value as this seems to be an element that could be a driver.
 
 ____________________________________________________________________________________
 **Key takeaways and Recommendations**
 
-Since we now know bathroom count and square footage have a strong linear relationship with the value of a home, we can expect homes with more bathrooms and/or more square feet will coordinate with higher tax valued homes in the three counties we focused on.
+Since we now know bathroom count and square footage have a strong linear relationship with the value of a home, we can expect homes with more bathrooms and/or more square feet will correlate with higher tax valued homes in the three counties we focused on.
 
 ____________________________________________________________________________________
 **Reproduce My Project**
