@@ -26,8 +26,17 @@ def new_zillow_data():
     write it to a csv file, and returns the df.
     '''
     # Create SQL query.
-    sql_query = 'SELECT bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet,taxvaluedollarcnt, yearbuilt, taxamount, fips FROM properties_2017'
-    
+        sql_query = 'SELECT parcelid, bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, taxamount, assessmentyear, regionidcounty,regionidzip, fips, transactiondate
+FROM properties_2017
+
+LEFT JOIN propertylandusetype USING(propertylandusetypeid)
+
+JOIN predictions_2017 USING(parcelid)
+
+WHERE propertylandusedesc IN ("Single Family Residential",                       
+                              "Inferred Single Family Residential")
+                              AND (transactiondate BETWEEN '2017-05-01' AND '2017-08-31'
+                                   
     # Read in DataFrame from Codeup db.
     df = pd.read_sql(sql_query, get_connection('zillow'))
     

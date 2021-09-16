@@ -10,7 +10,7 @@ url = f"mysql+pymysql://{username}:{password}@{host}/zillow"
 # this query brings in all the columns necessary to ask the questions posed by the zillow team  
 query = """
             
-SELECT parcelid, bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, taxamount, assessmentyear, regionidcounty,regionidzip, fips, transactiondate
+(SELECT parcelid, bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, taxamount, assessmentyear, regionidcounty,regionidzip, fips, transactiondate
 FROM properties_2017
 
 LEFT JOIN propertylandusetype USING(propertylandusetypeid)
