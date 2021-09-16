@@ -6,6 +6,23 @@ from env import host, user, password
 
 ###################### Acquire Titanic Data ######################
 
+url = f"mysql+pymysql://{username}:{password}@{host}/zillow"
+# this query brings in all the columns necessary to ask the questions posed by the zillow team  
+query = """
+            
+SELECT parcelid, bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, taxamount, assessmentyear, regionidcounty,regionidzip, fips, transactiondate
+FROM properties_2017
+
+LEFT JOIN propertylandusetype USING(propertylandusetypeid)
+
+JOIN predictions_2017 USING(parcelid)
+
+WHERE propertylandusedesc IN ("Single Family Residential",                       
+                              "Inferred Single Family Residential")
+                              AND (transactiondate BETWEEN '2017-05-01' AND '2017-08-31');
+                              
+                              """
+
 def get_connection(db, user=user, host=host, password=password):
     '''
     This function uses my info from my env file to
@@ -15,9 +32,14 @@ def get_connection(db, user=user, host=host, password=password):
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
     
 def get_db():
-    df = pd.read_sql('''SELECT *
-    FROM customers
-    JOIN contract_types USING(contract_type_id)
-    JOIN internet_service_types USING(internet_service_type_id)
-    JOIN payment_types USING(payment_type_id);''', get_connection("telco_churn"))
+    df = pd.read_sql('''SELECT parcelid, bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, taxamount, assessmentyear, regionidcounty,regionidzip, fips, transactiondate
+FROM properties_2017
+
+LEFT JOIN propertylandusetype USING(propertylandusetypeid)
+
+JOIN predictions_2017 USING(parcelid)
+
+WHERE propertylandusedesc IN ("Single Family Residential",                       
+                              "Inferred Single Family Residential")
+                              AND (transactiondate BETWEEN '2017-05-01' AND '2017-08-31');''', get_connection("telco_churn"))
     return df
