@@ -39,7 +39,7 @@ def prep_work(df):
     # now lets convert these back to the correct datatype
     df.parcel_id = df.parcel_id.astype(object)
     df.beds = df.beds.astype(int)
-    df.tax_amount = df.tax_amount.astype(int)
+    df.taxamount = df.taxamount.astype(int)
     df.sqft = df.sqft.astype(float, copy=False)
     # dropping ALL duplicate values
     df.drop_duplicates(subset ="parcel_id",keep = False, inplace = True)
