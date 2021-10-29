@@ -54,6 +54,26 @@ Feature                             Description
 'taxamount':                        The total property tax assessed for that assessment year
 'taxvaluedollarcnt':                The total tax assessed value of the parcel
 
+**Data Dictionary**
+
+
+
+
+| Feature               | Datatype               | Description                                   |
+|:----------------------|:-----------------------|:----------------------------------------------|
+| Loan_ID               | 1311 non-null: int64   | Unique Loan ID                                |
+| Gender                | 1311 non-null: object  | Male/ Female                                  |
+| Married               | 1304 non-null: object  | Applicant married (Y/N)                       |
+| Dependents            | 1310 non-null: object  | Number of dependents                          |
+| Education             | 955 non-null: object   | Applicant Education (Graduate/ Under-Graduate)|
+| Self_Employed         | 270 non-null: object   | Applicant income                              |
+| ApplicantIncome       | 311 non-null: int64    | Mill where the beans were processed           |       | CoapplicantIncome     | 1311 non-null: int64   | Coapplicant income                            |
+| Credit History        | 1165 non-null: object  | Credit history meets guidelines               |
+| LoanAmount            | 1311 non-null: int64   | Loan amount in thousands                      |
+| Loan_Amount_Term      | 1311 non-null: int64   | Term of loan in months                        |       
+| Property_Area         | 1088 non-null: object  | Urban/ Semi Urban/ Rural                      |
+| Loan_Status           | 1254 non-null: object  | Loan approved (Y/N)                           |
+
 ____________________________________________________________________________________
 **Initial Hypotheses
 
