@@ -9,40 +9,30 @@ from sklearn.model_selection import train_test_split
 import env
 np.random.seed(123)
 
-def prep_work(df):
-    """ This function, drops nulls, renames the columns to something more clear to understand, corrects datatypes, get's rid of 
-    unneeded decimals, reassigns proper dataypes, and drops duplicates."""
-    #dropping null values
+def prep_zillow_data(df):
+    ''' This function preps the data by dropping rows with nulls, correcting datatypes, renaming the columns for better          understanding,drops rows with erroneous entries, drops duplicates, and creates a tax_rate column.
+     '''
+    # Compared to the row count we have more than enough to drop these
     df = df.dropna()
-    # now lets rename columns
-    df = df.rename(columns={
-                            'parcelid': 'parcel_id',
-                            'calculatedfinishedsquarefeet': 'sqft',
-                            'bathroomcnt': 'baths',
-                            'bedroomcnt': 'beds',
-                            'assessmentyear': 'assessment_year',
-                            'regionidcounty': 'county',
-                            'regionidzip': 'zipcode',
-                            'transactiondate': 'tranaction_date',
-                            'taxvaluedollarcnt':'tax_value'})
-    # change datatypes to int beds,tax_value 
-    df['beds'] = df['beds'].astype(int)
+    # Next we can correct data types that are wrong
+    df.parcelid = df.parcelid.astype('object')
+    df.regionidcounty = df.regionidcounty.astype('object')
+    df.regionidzip = df.regionidzip.astype('object')
+    df.fips = df.fips.astype('object')
+    df.taxvaluedollarcnt, df.assessmentyear = df.taxvaluedollarcnt.astype('int64'),df.assessmentyear.astype('int64')               # Next I will rename the columns to be more recognizable
+    df = df.rename(columns={"bedroomcnt": "bedrooms", "bathroomcnt": "bathrooms","calculatedfinishedsquarefeet":       "area","taxamount": "tax_amount", "taxvaluedollarcnt": "tax_value", "fips": "zipcode", "regionidcounty": "county_id","assessmentyear": "assessment_year", "transactiondate":"transaction_date" })
+    # Here I check for erroneous entries and drop them
+    df.drop(df[df['bedrooms'] < 1].index, inplace = True)
+    df.drop(df[df['bathrooms'] < 1].index, inplace = True)
+    df.drop(df[df['area'] < 200].index, inplace = True)
     # calculate the tax rate and make a new column/feature 
-    df['tax_rate']= df['taxamount']/df['tax_value']
-    # let's get rid of the unnecessary decimal point
-    df['beds','sqft','tax_value','assessment_year','county','zipcode'] =          df['beds','sqft','tax_value','assessment_year','county','zipcode'].astype(str).apply(lambda x: x.replace('.0',''))
-    df['sqft'] = df['sqft'].astype(str).apply(lambda x: x.replace('.0',''))
-    df['tax_value'] = df['tax_value'].astype(str).apply(lambda x: x.replace('.0',''))
-    df['assessment_year'] = df['assessment_year'].astype(str).apply(lambda x: x.replace('.0',''))
-    df['county'] = df['county'].astype(str).apply(lambda x: x.replace('.0',''))
-    df['zipcode'] = df['zipcode'].astype(str).apply(lambda x: x.replace('.0',''))
-    # now lets convert these back to the correct datatype
-    df.parcel_id = df.parcel_id.astype(object)
-    df.beds = df.beds.astype(int)
-    df.taxamount = df.taxamount.astype(int)
-    df.sqft = df.sqft.astype(float, copy=False)
+    df['tax_rate']= df['tax_amount']/df['tax_value']
+    # time to check for duplicates and remove them
     # dropping ALL duplicate values
-    df.drop_duplicates(subset ="parcel_id",keep = False, inplace = True)
+    df.drop_duplicates(subset ="parcelid",
+                         keep = False, inplace = True)
+    # calculate the tax rate and make a new column/feature 
+    df['tax_rate']= df['tax_amount']/df['tax_value']
     return df
 
 def train_validate_test(df, target):
