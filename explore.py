@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from scipy import stats
 
 
-ef explore_univariate(train, cat_vars, quant_vars):
+def explore_univariate(train, cat_vars, quant_vars):
     for var in cat_vars:
         explore_univariate_categorical(train, var)
         print('_________________________________________________________________')
