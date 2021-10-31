@@ -10,7 +10,8 @@ import env
 np.random.seed(123)
 
 def prep_zillow_data(df):
-    ''' This function preps the data by dropping rows with nulls, correcting datatypes, renaming the columns for better          understanding,drops rows with erroneous entries, drops duplicates, and creates a tax_rate column.
+    ''' This function preps the data by dropping rows with nulls, correcting datatypes, renaming the columns for better understanding,, 
+    drops rows with erroneous entries, drops duplicates, and creates a tax_rate column
      '''
     # Compared to the row count we have more than enough to drop these
     df = df.dropna()
@@ -19,8 +20,9 @@ def prep_zillow_data(df):
     df.regionidcounty = df.regionidcounty.astype('object')
     df.regionidzip = df.regionidzip.astype('object')
     df.fips = df.fips.astype('object')
-    df.taxvaluedollarcnt, df.assessmentyear = df.taxvaluedollarcnt.astype('int64'),df.assessmentyear.astype('int64')               # Next I will rename the columns to be more recognizable
-    df = df.rename(columns={"bedroomcnt": "bedrooms", "bathroomcnt": "bathrooms","calculatedfinishedsquarefeet":       "area","taxamount": "tax_amount", "taxvaluedollarcnt": "tax_value", "fips": "zipcode", "regionidcounty": "county_id","assessmentyear": "assessment_year", "transactiondate":"transaction_date" })
+    df.taxvaluedollarcnt, df.assessmentyear = df.taxvaluedollarcnt.astype('int64'), df.assessmentyear.astype('int64')   
+    # Next I will rename the columns to be more recognizable
+    df = df.rename(columns={"bedroomcnt": "bedrooms", "bathroomcnt": "bathrooms","calculatedfinishedsquarefeet": "area","taxamount": "tax_amount", "taxvaluedollarcnt": "tax_value", "fips": "zipcode", "regionidcounty": "county_id","assessmentyear": "assessment_year", "transactiondate":"transaction_date" })
     # Here I check for erroneous entries and drop them
     df.drop(df[df['bedrooms'] < 1].index, inplace = True)
     df.drop(df[df['bathrooms'] < 1].index, inplace = True)
@@ -35,7 +37,7 @@ def prep_zillow_data(df):
     df['tax_rate']= df['tax_amount']/df['tax_value']
     return df
 
-def train_validate_test(df, target):
+def train_validate_test(df2, target):
     '''
     this function takes in a dataframe and splits it into 3 samples, 
     a test, which is 20% of the entire dataframe, 
@@ -47,7 +49,7 @@ def train_validate_test(df, target):
     X_train (df) & y_train (series), X_validate & y_validate, X_test & y_test. 
     '''
     # split df into test (20%) and train_validate (80%)
-    train_validate, test = train_test_split(df, test_size=.2, random_state=123)
+    train_validate, test = train_test_split(df2, test_size=.2, random_state=123)
 
     # split train_validate off into train (70% of 80% = 56%) and validate (30% of 80% = 24%)
     train, validate = train_test_split(train_validate, test_size=.3, random_state=123)
@@ -95,8 +97,8 @@ def train_validate_test(df, target):
 
 # plt.figure(figsize=(13, 6))
 # plt.subplot(121)
-# plt.hist(x_train, bins=25, ec='black')
+# plt.hist(X_train, bins=25, ec='black')
 # plt.title('Original')
 # plt.subplot(122)
-# plt.hist(x_train_scaled, bins=25, ec='black')
+# plt.hist(X_train_scaled, bins=25, ec='black')
 # plt.title('Scaled')
