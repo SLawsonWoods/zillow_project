@@ -70,18 +70,25 @@ def train_validate_test(df2, target):
     return train, validate, test, X_train, y_train, X_validate, y_validate, X_test, y_test
 
 
-# def remove_outlier(df):
-#     '''
-#     This function will remove values that are 3 standard deviations above or below the mean for sqft, baths, beds, and tax_value.         (Our MVP values)
-#     '''
-#     new_df = df[(np.abs(stats.zscore(df['sqft'])) < 3)]
-#     new_df = df[(np.abs(stats.zscore(df['baths'])) < 3)]
-#     new_df = df[(np.abs(stats.zscore(df['beds'])) < 3)]
-#     new_df = df[(np.abs(stats.zscore(df['tax_value'])) < 3)]
-#     return new_df
+def remove_outliers(df, k, col_list):
+    ''' remove outliers from a list of columns in a dataframe 
+        and return that dataframe
+    '''
+    
+    for col in col_list:
 
+        q1, q3 = df[col].quantile([.25, .75])  # get quartiles
+        
+        iqr = q3 - q1   # calculate interquartile range
+        
+        upper_bound = q3 + k * iqr   # get upper bound
+        lower_bound = q1 - k * iqr   # get lower bound
 
-
+        # return dataframe without outliers
+        
+        df = df[(df[col] > lower_bound) & (df[col] < upper_bound)]
+        
+    return df
 
 # def scale_dataset(train, validate, test):
 #     #applying the robust scaler
